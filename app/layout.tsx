@@ -17,6 +17,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Mini Jira",
   description: "mini Jira for DSR course",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
