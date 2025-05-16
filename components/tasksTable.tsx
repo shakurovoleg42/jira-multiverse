@@ -60,6 +60,76 @@ const initialTasks: Task[] = [
     status: "todo",
     createdBy: "User",
   },
+  {
+    id: 9,
+    title: "Task 9",
+    description: "Description for Task 9",
+    status: "progress",
+    createdBy: "User",
+  },
+  {
+    id: 10,
+    title: "Task 10",
+    description: "Description for Task 10",
+    status: "done",
+    createdBy: "User",
+  },
+  {
+    id: 11,
+    title: "Task 11",
+    description: "Description for Task 11",
+    status: "todo",
+    createdBy: "User",
+  },
+  {
+    id: 12,
+    title: "Task 12",
+    description: "Description for Task 12",
+    status: "progress",
+    createdBy: "User",
+  },
+  {
+    id: 13,
+    title: "Task 13",
+    description: "Description for Task 13",
+    status: "done",
+    createdBy: "User",
+  },
+  {
+    id: 14,
+    title: "Task 14",
+    description: "Description for Task 14",
+    status: "todo",
+    createdBy: "User",
+  },
+  {
+    id: 15,
+    title: "Task 15",
+    description: "Description for Task 15",
+    status: "progress",
+    createdBy: "User",
+  },
+  {
+    id: 16,
+    title: "Task 16",
+    description: "Description for Task 16",
+    status: "done",
+    createdBy: "User",
+  },
+  {
+    id: 17,
+    title: "Task 17",
+    description: "Description for Task 17",
+    status: "todo",
+    createdBy: "User",
+  },
+  {
+    id: 18,
+    title: "Task 18",
+    description: "Description for Task 18",
+    status: "progress",
+    createdBy: "User",
+  },
 ];
 
 function TasksTable() {
@@ -81,7 +151,7 @@ function TasksTable() {
     <tbody className="bg-transparent">
       <tr className="align-top">
         {/* ToDo Column */}
-        <td className="w-1/3 px-4 md:px-6 py-4 bg-blue-50 dark:bg-blue-900/20">
+        <td className="w-1/3 px-4 md:px-6 py-4 bg-blue-50 dark:bg-blue-900/20  xl:min-w-[428px]">
           <div className="flex flex-col gap-4">
             {todos.map((task) => (
               <TaskCard
@@ -90,11 +160,17 @@ function TasksTable() {
                 onStatusChange={handleStatusChange}
               />
             ))}
+            {todos.length === 0 && (
+              <div className="flex items-center justify-center h-full">
+                <p className="text-gray-500 dark:text-gray-400 select-none">
+                  No tasks in progress
+                </p>
+              </div>
+            )}
           </div>
         </td>
-
         {/* In Progress Column */}
-        <td className="w-1/3 px-4 md:px-6 py-4 bg-amber-50 dark:bg-amber-900/20">
+        <td className="w-1/3 px-4 md:px-6 py-4 bg-amber-50 dark:bg-amber-900/20 xl:min-w-[428px]">
           <div className="flex flex-col gap-4">
             {progress.map((task) => (
               <TaskCard
@@ -103,11 +179,17 @@ function TasksTable() {
                 onStatusChange={handleStatusChange}
               />
             ))}
+            {progress.length === 0 && (
+              <div className="flex items-center justify-center h-full">
+                <p className="text-gray-500 dark:text-gray-400 select-none">
+                  No tasks in progress
+                </p>
+              </div>
+            )}
           </div>
         </td>
-
         {/* Done Column */}
-        <td className="w-1/3 px-4 md:px-6 py-4 bg-green-50 dark:bg-green-900/20">
+        <td className="w-1/3 px-4 md:px-6 py-4 bg-green-50 dark:bg-green-900/20 xl:min-w-[428px]">
           <div className="flex flex-col gap-4">
             {done.map((task) => (
               <TaskCard
@@ -116,6 +198,13 @@ function TasksTable() {
                 onStatusChange={handleStatusChange}
               />
             ))}
+            {done.length === 0 && (
+              <div className="flex items-center justify-center h-full">
+                <p className="text-gray-500 dark:text-gray-400 select-none">
+                  No tasks in progress
+                </p>
+              </div>
+            )}
           </div>
         </td>
       </tr>
