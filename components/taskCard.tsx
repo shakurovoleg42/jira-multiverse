@@ -1,28 +1,26 @@
 "use client";
 import clsx from "clsx";
 import React from "react";
-import { Button } from "./ui/button";
 import { useTheme } from "next-themes";
-import { ArrowUpRight } from "lucide-react";
-import { TaskCardProps } from "@/app/types/tasks";
+import { Settings } from "lucide-react";
+import { TaskCardProps, TaskStatus } from "@/app/types/tasks";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 function TaskCard({ task, onStatusChange }: TaskCardProps) {
   const { theme } = useTheme();
 
-  const changeStatus = () => {
-    let newStatus = task.status;
-    switch (task.status) {
-      case "todo":
-        newStatus = "progress";
-        break;
-      case "progress":
-        newStatus = "done";
-        break;
-      case "done":
-        newStatus = "todo";
-        break;
+  const changeStatus = (newStatus: TaskStatus) => {
+    if (onStatusChange) {
+      onStatusChange(task.id, newStatus);
     }
-    onStatusChange(task.id, newStatus);
   };
 
   return (
@@ -41,18 +39,34 @@ function TaskCard({ task, onStatusChange }: TaskCardProps) {
           Author: {task.createdBy}
         </p>
       </div>
-      <Button
-        onClick={changeStatus}
-        variant="ghost"
-        className={clsx(
-          "hover:bg-opacity-20",
-          theme === "dark"
-            ? "text-purple-300 hover:bg-purple-500"
-            : "text-indigo-500 hover:bg-indigo-200"
-        )}
-      >
-        <ArrowUpRight />
-      </Button>
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <Settings />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>Options:</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <b className="">Edit</b>
+
+          <DropdownMenuItem onClick={() => console.log(" should be edited")}>
+            Edit
+          </DropdownMenuItem>
+          <b className="">Switch to:</b>
+          <DropdownMenuItem onClick={() => changeStatus("todo")}>
+            ToDo
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => changeStatus("progress")}>
+            In-progress
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => changeStatus("done")}>
+            Done
+          </DropdownMenuItem>
+          <b className="">Delete</b>
+          <DropdownMenuItem onClick={() => console.log(" should be deleted")}>
+            Delete
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 }
