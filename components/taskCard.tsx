@@ -18,7 +18,7 @@ function TaskCard() {
     >
       <div className="flex flex-col text-start">
         <b>Title</b>
-        <p className="text-sm text-gray-500 truncate max-w-[300px]">
+        <p className="text-sm truncate max-w-[300px]">
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero nihil
           optio laboriosam hic vitae ullam asperiores tempora, minus sunt eius,
           nemo eligendi assumenda quam amet consequuntur praesentium impedit id

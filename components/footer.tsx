@@ -15,7 +15,7 @@ function Footer() {
           : "bg-white border-black"
       )}
     >
-      <img src="/favicon.svg" alt="" />
+      {/* <img src="/favicon.svg" alt="" /> */}
     </div>
   );
 }

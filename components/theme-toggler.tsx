@@ -35,10 +35,10 @@ export function ModeToggle() {
           size="icon"
           aria-label="Toggle theme"
           className={clsx(
-            "transition-all",
+            "relative transition-all border-[0.5px]",
             theme === "dark"
-              ? "shadow-white/50 shadow-sm hover:bg-gray-800"
-              : "shadow-black/20 shadow-sm hover:bg-gray-100"
+              ? "border-gray-300 bg-gray-800 hover:bg-gray-700 text-gray-300 shadow-lg shadow-[#ffee00]/20 hover:text-white"
+              : "border-gray-400 bg-white hover:bg-gray-50 text-gray-700 shadow-lg shadow-black/20 hover:text-black"
           )}
         >
           <Sun className="absolute h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
