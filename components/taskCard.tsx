@@ -46,8 +46,10 @@ function TaskCard({ task, onStatusChange }: TaskCardProps) {
         <DropdownMenuContent>
           <DropdownMenuLabel>Options:</DropdownMenuLabel>
           <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => console.log(" should be opened")}>
+            Open
+          </DropdownMenuItem>
           <b className="">Edit</b>
-
           <DropdownMenuItem onClick={() => console.log(" should be edited")}>
             Edit
           </DropdownMenuItem>

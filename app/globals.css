@@ -130,3 +130,60 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes fadeToBlack {
+  0% {
+    opacity: 1;
+    background-color: white;
+  }
+  100% {
+    opacity: 0;
+    background-color: black;
+  }
+}
+
+/* @keyframes grenadeGlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+  0% {
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.7));
+  }
+  100% {
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.9));
+  }
+}
+
+.animate-fade-to-black {
+  animation: fadeToBlack 3s linear forwards;
+}
+
+.drop-shadow-grenade {
+  animation: grenadeGlow 1s ease-in-out infinite;
+  animation: spinSlow 1s linear infinite;
+}
+
+@keyframes fadeToBlack {
+  0% {
+    opacity: 1;
+    background-color: white;
+  }
+  100% {
+    opacity: 0;
+    background-color: black;
+  }
+}
+
+.animate-fade-to-black {
+  animation: fadeToBlack 3s linear forwards;
+}
+
+.animate-spin-slow {
+  animation: spinSlow 2s linear infinite;
+} */
