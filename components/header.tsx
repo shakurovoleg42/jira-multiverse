@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ModeToggle } from "./theme-toggler";
 import { Button } from "./ui/button";
 import Link from "next/link";
@@ -8,22 +8,18 @@ import { Container } from "./container";
 import clsx from "clsx";
 import { useTheme } from "next-themes";
 
-function Profile() {
-  return (
-    <div className="flex items-center space-x-2 p-6">
-      <img
-        src="https://avatars.githubusercontent.com/u/121859456?v=4"
-        className="w-8 h-8 rounded-full"
-        alt="Profile"
-      />
-      <span className="text-sm font-bold">Nickname</span>
-    </div>
-  );
-}
+import ProfileMenu from "./profile";
 
 const Header = () => {
-  const [isLogged, setIsLogged] = useState(false);
   const { theme } = useTheme();
+  const [role, setRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    const userRole = localStorage.getItem("role");
+    setRole(userRole);
+  }, []);
+
+  const cleanRole = role ? role.replace(/"/g, "") : null;
 
   return (
     <Container
@@ -40,7 +36,7 @@ const Header = () => {
             <Link
               href="/"
               className={clsx(
-                "hover:border-b-[3px] border-blue-400",
+                "hover:border-b-[3px] border-amber-500",
                 theme === "dark" ? "text-dark-background" : null
               )}
             >
@@ -51,7 +47,7 @@ const Header = () => {
             <Link
               href="/dashboard"
               className={clsx(
-                "hover:border-b-[3px] border-blue-400",
+                "hover:border-b-[3px] border-amber-500",
                 theme === "dark" ? "text-dark-background" : null
               )}
             >
@@ -59,23 +55,25 @@ const Header = () => {
             </Link>
           </li>
           <li>
-            <Link
-              href="/login"
-              className={clsx(
-                "hover:border-b-[3px] border-blue-400",
-                theme === "dark" ? "text-dark-background" : null
-              )}
-            >
-              Login
-            </Link>
+            {cleanRole === "admin" && (
+              <Link
+                href="/users"
+                className={clsx(
+                  "hover:border-b-[3px] border-amber-500",
+                  theme === "dark" ? "text-dark-background" : null
+                )}
+              >
+                Users
+              </Link>
+            )}
           </li>
         </ul>
       </div>
       <div className="flex flex-row space-x-4">
         <ModeToggle />
         <div>
-          <Button onClick={() => setIsLogged(!isLogged)}>
-            {isLogged ? <Profile /> : "Login"}
+          <Button className="bg-amber-600 hover:bg-amber-500 text-white font-semibold rounded-lg transition-all transform hover:scale-[1.01] shadow-md shadow-amber-600/30">
+            <ProfileMenu />
           </Button>
         </div>
       </div>

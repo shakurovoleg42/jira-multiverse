@@ -80,48 +80,50 @@
 
 .dark {
   /* Основные цвета */
-  --background: oklch(0.12 0 0); /* Глубокий угольно-черный */
-  --foreground: oklch(0.98 0 0); /* Чистый белый с мягким свечением */
+  --background: #1f2937; /* gray-800 */
+  --foreground: #f9fafb; /* gray-50 */
 
-  /* Акцентные цвета */
-  --primary: oklch(0.7 0.25 260); /* Фиолетово-синий с насыщенностью */
-  --primary-foreground: oklch(0.98 0 0);
+  /* Акцентные цвета (оранжевая палитра) */
+  --primary: #d97706; /* amber-600 */
+  --primary-foreground: #ffffff;
+  --primary-hover: #b45309; /* amber-700 */
+  --primary-shadow: 0 4px 24px rgba(217, 119, 6, 0.3);
 
   /* Вторичные цвета */
-  --secondary: oklch(0.25 0 0); /* Темный графит */
-  --secondary-foreground: oklch(0.9 0 0);
+  --secondary: #111827; /* gray-900 */
+  --secondary-foreground: #e5e7eb; /* gray-200 */
 
-  /* Градиенты и специальные эффекты */
-  --gradient-from: oklch(0.5 0.3 270);
-  --gradient-to: oklch(0.6 0.25 200);
+  /* Карточки и поверхности */
+  --card: #1f2937; /* gray-800 */
+  --card-foreground: #f9fafb; /* gray-50 */
+  --card-border: rgba(251, 191, 36, 0.3); /* amber-400 с прозрачностью */
 
-  /* Элементы интерфейса */
-  --card: oklch(0.18 0.02 260); /* Темная с легким синим оттенком */
-  --card-foreground: oklch(0.95 0 0);
+  /* Границы и инпуты */
+  --border: #374151; /* gray-700 */
+  --input: #111827; /* gray-900 */
+  --input-border: #4b5563; /* gray-600 */
+  --input-focus: #d97706; /* amber-600 */
+  --input-placeholder: #9ca3af; /* gray-400 */
 
-  --border: oklch(0.22 0.05 250 / 0.4); /* Полупрозрачные границы */
-  --input: oklch(0.2 0 0); /* Поля ввода */
+  /* Тени и эффекты */
+  --shadow: 0 4px 24px rgba(17, 24, 39, 0.5);
+  --shadow-primary: 0 4px 24px rgba(217, 119, 6, 0.3);
+  --ring: rgba(251, 191, 36, 0.4); /* amber-400 с прозрачностью */
+  --glow: 0 0 15px rgba(217, 119, 6, 0.3);
+
+  /* Градиенты */
+  --gradient-from: #1f2937; /* gray-800 */
+  --gradient-to: #111827; /* gray-900 */
 
   /* Состояния */
-  --destructive: oklch(0.7 0.3 25); /* Насыщенный красный */
-  --success: oklch(0.8 0.3 150); /* Изумрудный */
+  --destructive: #dc2626; /* red-600 */
+  --success: #059669; /* emerald-600 */
 
-  /* Специальные элементы */
-  --sidebar: oklch(0.15 0.05 260); /* Боковая панель */
-  --sidebar-border: oklch(0.25 0.1 260 / 0.6);
-
-  /* Графики и визуализации */
-  --chart-1: oklch(0.7 0.25 260); /* Основной акцент */
-  --chart-2: oklch(0.65 0.2 180); /* Бирюзовый */
-  --chart-3: oklch(0.75 0.15 80); /* Теплый желтый */
-  --chart-4: oklch(0.6 0.3 330); /* Пурпурный */
-  --chart-5: oklch(0.55 0.25 30); /* Коралловый */
-
-  /* Эффекты */
-  --ring: oklch(0.7 0.3 260 / 0.4); /* Свечение при фокусе */
-  --glow: 0 0 15px oklch(0.7 0.3 260 / 0.3); /* Неоновый эффект */
+  /* Дополнительные элементы */
+  --sidebar: #111827; /* gray-900 */
+  --sidebar-border: #1f2937; /* gray-800 */
+  --decorative-dot: #f59e0b; /* amber-500 */
 }
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
