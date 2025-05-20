@@ -10,5 +10,5 @@ export interface Task {
 
 export interface TaskCardProps {
   task: Task;
-  onStatusChange: (taskId: number, newStatus: TaskStatus) => void;
+  // onStatusChange: (taskId: number, newStatus: TaskStatus) => void;
 }

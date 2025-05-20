@@ -16,13 +16,14 @@ function Users() {
 
         const role = localStorage.getItem("role")?.replace(/"/g, "");
 
-        if (role === "admin") {
-          setAccess("admin");
-        } else if (role === "user") {
-          setAccess("user");
-        } else {
-          setAccess(null);
-          router.push("/login");
+        switch (role) {
+          case "admin":
+          case "user":
+            setAccess(role);
+            break;
+          default:
+            setAccess(null);
+            router.push("/login");
         }
       } catch (error) {
         console.error("Error fetching user role:", error);

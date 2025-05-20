@@ -42,7 +42,7 @@ function Login() {
           </span>
         </h2>
 
-        <div className="space-y-6">
+        <div className="space-y-6 text-[#ff4747] font-bold">
           {error && <p>Login or password in incorrect</p>}
 
           <form onSubmit={handleSubmit} className="space-y-5">

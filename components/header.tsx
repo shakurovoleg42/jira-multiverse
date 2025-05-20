@@ -24,7 +24,7 @@ const Header = () => {
   return (
     <Container
       className={clsx(
-        "flex items-center justify-between p-4 border-b-2 rounded-[15px] shadow-sm"
+        "flex items-center justify-between p-4 border-b-2 rounded-[15px] shadow-sm flex-wrap gap-4 md:gap-0"
       )}
     >
       <div className="flex items-center space-x-6">

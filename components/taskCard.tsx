@@ -3,7 +3,7 @@ import clsx from "clsx";
 import React from "react";
 import { useTheme } from "next-themes";
 import { Settings } from "lucide-react";
-import { TaskCardProps, TaskStatus } from "@/app/types/tasks";
+import { TaskCardProps } from "@/app/types/tasks"; // TaskStatus
 
 import {
   DropdownMenu,
@@ -14,14 +14,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-function TaskCard({ task, onStatusChange }: TaskCardProps) {
+function TaskCard({ task }: TaskCardProps) {
   const { theme } = useTheme();
 
-  const changeStatus = (newStatus: TaskStatus) => {
-    if (onStatusChange) {
-      onStatusChange(task.id, newStatus);
-    }
-  };
+  // const changeStatus = (newStatus: TaskStatus) => {
+  //   if (onStatusChange) {
+  //     onStatusChange(task.id, newStatus);
+  //   }
+  // };
 
   return (
     <div
@@ -54,15 +54,15 @@ function TaskCard({ task, onStatusChange }: TaskCardProps) {
             Edit
           </DropdownMenuItem>
           <b className="">Switch to:</b>
-          <DropdownMenuItem onClick={() => changeStatus("todo")}>
+          {/* <DropdownMenuItem onClick={() => changeStatus("todo")}>
             ToDo
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => changeStatus("progress")}>
+          </DropdownMenuItem> */}
+          {/* <DropdownMenuItem onClick={() => changeStatus("progress")}>
             In-progress
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => changeStatus("done")}>
             Done
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
           <b className="">Delete</b>
           <DropdownMenuItem onClick={() => console.log(" should be deleted")}>
             Delete
