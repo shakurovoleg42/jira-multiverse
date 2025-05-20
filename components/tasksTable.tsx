@@ -1,8 +1,8 @@
 "use client";
 import React, { useEffect } from "react";
 import TaskCard from "./taskCard";
-import { Task } from "../pages/types/tasks";
-import { taskService } from "../pages/service/task.service";
+import { Task } from "../types/tasks";
+import { taskService } from "../service/task.service";
 
 const initialTasks: Task[] = [];
 

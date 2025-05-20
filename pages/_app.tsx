@@ -1,5 +1,5 @@
 import { ThemeProvider } from "next-themes";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider } from "../context/AuthContext";
 import Layout from "../components/layout"; // Assuming Layout is reusable
 import "./globals.css"; // Import global styles
 import type { AppProps } from "next/app";

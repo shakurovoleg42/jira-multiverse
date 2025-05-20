@@ -1,7 +1,7 @@
 "use client";
 import { Container } from "@/components/container";
 import React, { useEffect, useState } from "react";
-import { authService } from "./service/auth.service";
+import { authService } from "../service/auth.service";
 import { useRouter } from "next/navigation";
 
 function Users() {
