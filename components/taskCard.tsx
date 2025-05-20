@@ -3,7 +3,7 @@ import clsx from "clsx";
 import React from "react";
 import { useTheme } from "next-themes";
 import { Settings } from "lucide-react";
-import { TaskCardProps } from "@/app/types/tasks"; // TaskStatus
+import { TaskCardProps } from "../pages/types/tasks"; // TaskStatus
 
 import {
   DropdownMenu,

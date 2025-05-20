@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { authService } from "@/app/service/auth.service";
+import { authService } from "@/pages/service/auth.service";
 import { useRouter } from "next/navigation";
 
 function Profile() {

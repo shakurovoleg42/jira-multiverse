@@ -10,7 +10,6 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    router.refresh();
     const storedRole = localStorage.getItem("role");
     setRole(storedRole);
     if (!storedRole) {
