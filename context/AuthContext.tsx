@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     checkAuth();
-  }, []);
+  }, [user]);
 
   const login = async (username: string, password: string) => {
     try {

@@ -44,7 +44,7 @@ function TasksTable({ role }: { role: string | null }) {
             {tasks.length === 0 ? (
               <div className="flex items-center justify-center h-full">
                 <p className="text-gray-500 dark:text-gray-400 select-none">
-                  No tasks in progress
+                  No tasks
                 </p>
               </div>
             ) : (
