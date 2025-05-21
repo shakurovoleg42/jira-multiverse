@@ -1,8 +1,8 @@
 "use client";
 import clsx from "clsx";
-import React from "react";
+import React, { useState } from "react";
 import { useTheme } from "next-themes";
-import { Settings } from "lucide-react";
+import { BookOpen, Edit, Settings, Trash, Trash2 } from "lucide-react";
 import { TaskCardProps } from "../types/tasks"; // TaskStatus
 
 import {
@@ -13,16 +13,25 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { taskService } from "@/service/task.service";
 
-function TaskCard({ task }: TaskCardProps) {
+function TaskCard({ task, role, onDelete }: TaskCardProps) {
   const { theme } = useTheme();
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  // const changeStatus = (newStatus: TaskStatus) => {
-  //   if (onStatusChange) {
-  //     onStatusChange(task.id, newStatus);
-  //   }
-  // };
+  const handleDelete = async () => {
+    setIsDeleting(true);
 
+    try {
+      await taskService.delete(task.id);
+      console.log(`Task ${task.id} deleted`);
+      if (onDelete) {
+        onDelete();
+      }
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
+  };
   return (
     <div
       className={clsx(
@@ -33,7 +42,7 @@ function TaskCard({ task }: TaskCardProps) {
       )}
     >
       <div className="flex flex-col text-start">
-        <b>{task.title}</b>
+        <b className="truncate max-w-[300px]">{task.title}</b>
         <p className="text-sm truncate max-w-[300px]">{task.description}</p>
         <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
           Author: {task.createdBy}
@@ -41,32 +50,51 @@ function TaskCard({ task }: TaskCardProps) {
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger>
-          <Settings />
+          {isDeleting ? (
+            <div>
+              <Trash2 />
+              ...
+            </div>
+          ) : (
+            <Settings />
+          )}
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuLabel>Options:</DropdownMenuLabel>
+          <DropdownMenuLabel className="font-bold">Options:</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => console.log(" should be opened")}>
+            <BookOpen />
             Open
           </DropdownMenuItem>
-          <b className="">Edit</b>
-          <DropdownMenuItem onClick={() => console.log(" should be edited")}>
-            Edit
-          </DropdownMenuItem>
-          <b className="">Switch to:</b>
-          {/* <DropdownMenuItem onClick={() => changeStatus("todo")}>
-            ToDo
-          </DropdownMenuItem> */}
-          {/* <DropdownMenuItem onClick={() => changeStatus("progress")}>
-            In-progress
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => changeStatus("done")}>
-            Done
-          </DropdownMenuItem> */}
-          <b className="">Delete</b>
-          <DropdownMenuItem onClick={() => console.log(" should be deleted")}>
-            Delete
-          </DropdownMenuItem>
+          {role === "admin" && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuSeparator />
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => console.log(" should be edited")}
+                className="flex flex-row"
+              >
+                <Edit />
+                Edit
+              </DropdownMenuItem>
+            </>
+          )}
+
+          {(role === "admin" ||
+            (role === "user" && task.createdBy === "user")) && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={handleDelete}
+                className="flex flex-row"
+                disabled={isDeleting}
+              >
+                <Trash className="mr-2 h-4 w-4" />
+                {isDeleting ? "Deleting..." : "Delete"}
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

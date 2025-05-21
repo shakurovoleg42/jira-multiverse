@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
-
+import { taskService } from "@/service/task.service";
 interface Task {
   title: string;
   description: string;
@@ -14,10 +14,18 @@ const AddTaskTable = () => {
     title: "",
     description: "",
   });
-  console.log(postData);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    try {
+      const response = await taskService.create(
+        postData.title,
+        postData.description
+      );
+      console.log(response);
+    } catch (err) {
+      console.error(err);
+    }
     setPostData({ title: "", description: "" });
   };
 

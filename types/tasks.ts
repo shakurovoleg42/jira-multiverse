@@ -10,5 +10,6 @@ export interface Task {
 
 export interface TaskCardProps {
   task: Task;
-  // onStatusChange: (taskId: number, newStatus: TaskStatus) => void;
+  role: string | null;
+  onDelete?: () => void;
 }

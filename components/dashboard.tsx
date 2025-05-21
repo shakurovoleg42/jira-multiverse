@@ -1,8 +1,9 @@
 import React from "react";
 import { Container } from "./container";
 import TasksTable from "./tasksTable";
+import { User } from "@/types/user";
 
-function Dashboard() {
+function Dashboard({ role }: { role: User["role"] }) {
   return (
     <Container className="flex flex-row flex-wrap justify-between">
       <div className="overflow-x-auto shadow-lg rounded-lg">
@@ -17,7 +18,7 @@ function Dashboard() {
               </th>
             </tr>
           </thead>
-          <TasksTable />
+          <TasksTable role={role} />
         </table>
       </div>
     </Container>

@@ -42,7 +42,6 @@ export const authService = {
       },
       withCredentials: true,
     });
-    console.log(response);
     return response.data;
   },
 };

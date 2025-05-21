@@ -54,22 +54,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     router.push("/login");
   };
 
-  const checkAuth = async () => {
+  const checkAuth = async (): Promise<string | null> => {
     try {
       const token = localStorage.getItem("role");
       if (!token) {
         router.push("/login");
         setLoading(false);
-        return;
+        return null;
       }
 
       const userData = await authService.getMe();
-      console.log(userData);
       setUser(userData);
+      return token;
     } catch (error) {
       console.error("Auth check failed:", error);
       localStorage.removeItem("role");
       setUser(null);
+      return null;
     } finally {
       setLoading(false);
     }

@@ -9,17 +9,10 @@ import clsx from "clsx";
 import { useTheme } from "next-themes";
 
 import ProfileMenu from "./profile";
+import { User } from "@/types/user";
 
-const Header = () => {
+const Header = ({ role }: { role: User["role"] }) => {
   const { theme } = useTheme();
-  const [role, setRole] = useState<string | null>(null);
-
-  useEffect(() => {
-    const userRole = localStorage.getItem("role");
-    setRole(userRole);
-  }, []);
-
-  const cleanRole = role ? role.replace(/"/g, "") : null;
 
   return (
     <Container
@@ -55,7 +48,7 @@ const Header = () => {
             </Link>
           </li>
           <li>
-            {cleanRole === "admin" && (
+            {role === "admin" && (
               <Link
                 href="/users"
                 className={clsx(
@@ -73,7 +66,7 @@ const Header = () => {
         <ModeToggle />
         <div>
           <Button className="bg-amber-600 hover:bg-amber-500 text-white font-semibold rounded-lg transition-all transform hover:scale-[1.01] shadow-md shadow-amber-600/30">
-            <ProfileMenu />
+            <ProfileMenu role={role} />
           </Button>
         </div>
       </div>

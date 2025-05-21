@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { authService } from "@/service/auth.service";
 import { useRouter } from "next/navigation";
+import { User } from "@/types/user";
 
 function Profile() {
   const [username, setUsername] = useState<string | null>(null);
@@ -39,7 +40,7 @@ function Profile() {
         className="w-8 h-8 rounded-full"
         alt="Profile"
       />
-      <span className="text-sm font-bold">{cleanName || "Guest"}</span>
+      <span className="text-sm font-bold">{cleanName}</span>
       {cleanRole && (
         <>
           <span>-</span>
@@ -50,22 +51,9 @@ function Profile() {
   );
 }
 
-function ProfileMenu() {
+function ProfileMenu({ role }: { role: string | null }) {
   const router = useRouter();
-  const [role, setRole] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const checkAuth = () => {
-      const storedRole = localStorage.getItem("role");
-      setRole(storedRole);
-    };
-
-    checkAuth();
-    window.addEventListener("storage", checkAuth);
-
-    return () => window.removeEventListener("storage", checkAuth);
-  }, []);
 
   const handleLogout = async () => {
     setIsLoading(true);
@@ -73,7 +61,6 @@ function ProfileMenu() {
       await authService.logout();
       localStorage.removeItem("role");
       localStorage.removeItem("username");
-      setRole(null);
       router.push("/login");
     } catch (error) {
       console.error("Logout failed:", error);
