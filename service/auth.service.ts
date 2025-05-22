@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 
 export const authService = {
   login: async (login: string, password: string) => {
@@ -14,7 +14,7 @@ export const authService = {
           accept: "application/json",
         },
         withCredentials: true,
-      }
+      } as AxiosRequestConfig
     );
     return response.data;
   },
@@ -29,7 +29,7 @@ export const authService = {
           Accept: "application/json",
         },
         withCredentials: true,
-      }
+      } as AxiosRequestConfig
     );
     return response.data;
   },
@@ -41,7 +41,11 @@ export const authService = {
         Accept: "application/json",
       },
       withCredentials: true,
-    });
+    } as AxiosRequestConfig);
     return response.data;
+  },
+
+  setRoleToCookies: (role: string) => {
+    document.cookie = `role=${role}; path=/; SameSite=Strict; Secure`;
   },
 };

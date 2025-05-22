@@ -1,19 +1,21 @@
 import axios from "axios";
 
 export const taskService = {
-  list: async () => {
+  list: async (cookie?: string) => {
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL}/todos`,
       {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
+          ...(cookie ? { Cookie: cookie } : {}),
         },
         withCredentials: true,
       }
     );
     return response.data;
   },
+
   create: async (title: string, description: string) => {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/todos`,

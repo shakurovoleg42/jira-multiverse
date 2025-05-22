@@ -1,5 +1,6 @@
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
+import Cookies from "js-cookie";
 import { authService } from "../service/auth.service";
 import { useRouter } from "next/navigation";
 import { AuthContextType, User } from "../types/user";
@@ -14,49 +15,67 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const token = localStorage.getItem("role");
+        const token = Cookies.get("role");
         if (!token) {
-          router.push("/login");
           setLoading(false);
+          router.push("/login");
           return;
         }
 
         const userData = await authService.getMe();
         setUser(userData);
-      } catch (error) {
-        console.error("Auth check failed:", error);
-        localStorage.removeItem("role");
-        setUser(null);
+      } catch (error: any) {
+        if (error.response?.status === 401) {
+          Cookies.remove("role");
+          setUser(null);
+          router.push("/login");
+        }
       } finally {
         setLoading(false);
       }
     };
 
     checkAuth();
-  }, [user]);
+  }, []);
 
   const login = async (username: string, password: string) => {
     try {
       const data = await authService.login(username, password);
-      localStorage.setItem("username", JSON.stringify(data.name));
-      localStorage.setItem("role", JSON.stringify(data.role));
+
+      Cookies.set("role", data.role, {
+        path: "/",
+        sameSite: "Strict",
+        secure: true,
+      });
+
+      Cookies.set("username", data.name, {
+        path: "/",
+        sameSite: "Strict",
+        secure: true,
+      });
+
       setUser(data.user);
       router.push("/");
-    } catch (error) {
-      console.error("Login failed:", error);
-      throw error;
+    } catch (error: any) {
+      if (error.response?.status === 400) {
+        alert("Invalid username or password");
+      } else {
+        alert("An error occurred. Please try again later.");
+      }
     }
   };
 
   const logout = () => {
-    localStorage.clear();
+    Cookies.remove("role");
+    Cookies.remove("username");
+
     setUser(null);
     router.push("/login");
   };
 
   const checkAuth = async (): Promise<string | null> => {
     try {
-      const token = localStorage.getItem("role");
+      const token = Cookies.get("role");
       if (!token) {
         router.push("/login");
         setLoading(false);
@@ -66,9 +85,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const userData = await authService.getMe();
       setUser(userData);
       return token;
-    } catch (error) {
-      console.error("Auth check failed:", error);
-      localStorage.removeItem("role");
+    } catch (error: any) {
+      if (error.response?.status === 400) {
+        alert("You unauthorized");
+      }
+      Cookies.remove("role");
       setUser(null);
       return null;
     } finally {

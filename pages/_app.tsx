@@ -1,8 +1,9 @@
 import { ThemeProvider } from "next-themes";
 import { AuthProvider } from "../context/AuthContext";
-import Layout from "../components/layout"; // Assuming Layout is reusable
-import "./globals.css"; // Import global styles
+import Layout from "../components/layout";
+import "./globals.css";
 import type { AppProps } from "next/app";
+import NextTopLoader from "nextjs-toploader";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -12,6 +13,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       enableSystem
       disableTransitionOnChange
     >
+      <NextTopLoader color="#FFD700" height={2} showSpinner={false} />
+
       <AuthProvider>
         <Layout>
           <Component {...pageProps} />

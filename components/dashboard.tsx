@@ -1,9 +1,15 @@
 import React from "react";
 import { Container } from "./container";
 import TasksTable from "./tasksTable";
-import { User } from "@/types/user";
+import { Task } from "../types/tasks";
+import { User } from "../types/user";
 
-function Dashboard({ role }: { role: User["role"] }) {
+interface DashboardProps {
+  initialTasks: Task[];
+  role: User["role"];
+}
+
+function Dashboard({ initialTasks, role }: DashboardProps) {
   return (
     <Container className="flex flex-row flex-wrap justify-between">
       <div className="overflow-x-auto shadow-lg rounded-lg">
@@ -18,7 +24,7 @@ function Dashboard({ role }: { role: User["role"] }) {
               </th>
             </tr>
           </thead>
-          <TasksTable role={role} />
+          <TasksTable initialTasks={initialTasks} role={role ?? null} />
         </table>
       </div>
     </Container>

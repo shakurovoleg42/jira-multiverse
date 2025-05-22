@@ -1,53 +1,50 @@
-"use client";
 import { Container } from "@/components/container";
-import React, { useEffect, useState } from "react";
-import { authService } from "../service/auth.service";
-import { useRouter } from "next/navigation";
 import { usersService } from "@/service/users.service";
+import { parseCookies } from "nookies";
+import { GetServerSideProps } from "next";
+import { User } from "@/types/user";
 
-function Users() {
-  const [access, setAccess] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [users, setUsers] = useState([]);
-  const router = useRouter();
+interface UsersPageProps {
+  role: string | null;
+  users: User[];
+}
 
-  useEffect(() => {
-    const checkUserRole = async () => {
-      try {
-        await authService.getMe();
+export const getServerSideProps: GetServerSideProps<UsersPageProps> = async (
+  context
+) => {
+  const cookies = parseCookies(context);
+  const role = cookies.role || null;
 
-        const role = localStorage.getItem("role")?.replace(/"/g, "");
-
-        switch (role) {
-          case "admin":
-          case "user":
-            setAccess(role);
-            break;
-          default:
-            setAccess(null);
-            router.push("/login");
-        }
-        const users = await usersService.list();
-        setUsers(users);
-        console.log(users);
-      } catch (error) {
-        console.error("Error fetching user role:", error);
-        router.push("/login");
-      } finally {
-        setLoading(false);
-      }
+  if (!role || (role !== "admin" && role !== "user")) {
+    return {
+      redirect: {
+        destination: "/404",
+        permanent: false,
+      },
     };
-
-    checkUserRole();
-  }, [router]);
-
-  if (loading) {
-    return <Container>Loading...</Container>;
   }
 
+  try {
+    const cookieHeader = context.req.headers.cookie || "";
+    const users = await usersService.list(cookieHeader);
+    return {
+      props: {
+        role,
+        users,
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return {
+      notFound: true,
+    };
+  }
+};
+
+export default function Users({ role, users }: UsersPageProps) {
   return (
     <Container>
-      {access === "admin" ? (
+      {role === "admin" ? (
         <div className="text-center flex flex-col items-center my-5">
           <h1 className="text-2xl font-bold">Admin Access</h1>
           <div>
@@ -60,7 +57,7 @@ function Users() {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user: any) => (
+                {users.map((user) => (
                   <tr key={user.id}>
                     <td className="px-4 py-2 border-2">{user.login}</td>
                     <td className="px-4 py-2 border-2">{user.role}</td>
@@ -72,12 +69,10 @@ function Users() {
           </div>
         </div>
       ) : (
-        <div className="text-center">
+        <div className="text-center mt-10">
           <h1 className="text-2xl font-bold">You have no permission</h1>
         </div>
       )}
     </Container>
   );
 }
-
-export default Users;

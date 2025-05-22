@@ -65,9 +65,7 @@ const Header = ({ role }: { role: User["role"] }) => {
       <div className="flex flex-row space-x-4">
         <ModeToggle />
         <div>
-          <Button className="bg-amber-600 hover:bg-amber-500 text-white font-semibold rounded-lg transition-all transform hover:scale-[1.01] shadow-md shadow-amber-600/30">
-            <ProfileMenu role={role} />
-          </Button>
+          <ProfileMenu role={role ?? null} />
         </div>
       </div>
     </Container>

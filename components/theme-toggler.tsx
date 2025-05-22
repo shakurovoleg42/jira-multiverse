@@ -16,7 +16,6 @@ export function ModeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  // Гарантируем что компонент смонтирован (для избежания hydration mismatch)
   useEffect(() => setMounted(true), []);
 
   if (!mounted) {
