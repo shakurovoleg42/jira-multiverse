@@ -10,6 +10,7 @@ import { useTheme } from "next-themes";
 
 import ProfileMenu from "./profile";
 import { User } from "@/types/user";
+import IsAdminUsers from "./isAdminUsers";
 
 const Header = ({ role }: { role: User["role"] }) => {
   const { theme } = useTheme();
@@ -26,46 +27,25 @@ const Header = ({ role }: { role: User["role"] }) => {
         </Link>
         <ul className="flex space-x-4 flex-row font-bold">
           <li>
-            <Link
-              href="/"
-              className={clsx(
-                "hover:border-b-[3px] border-amber-500",
-                theme === "dark" ? "text-dark-background" : null
-              )}
-            >
+            <Link href="/" className="hover:border-b-[3px] border-amber-500">
               Home
             </Link>
           </li>
           <li>
             <Link
               href="/dashboard"
-              className={clsx(
-                "hover:border-b-[3px] border-amber-500",
-                theme === "dark" ? "text-dark-background" : null
-              )}
+              className="hover:border-b-[3px] border-amber-500"
             >
               Dashboard
             </Link>
           </li>
-          <li>
-            {role === "admin" && (
-              <Link
-                href="/users"
-                className={clsx(
-                  "hover:border-b-[3px] border-amber-500",
-                  theme === "dark" ? "text-dark-background" : null
-                )}
-              >
-                Users
-              </Link>
-            )}
-          </li>
+          <IsAdminUsers role={role ?? ""} />
         </ul>
       </div>
       <div className="flex flex-row space-x-4">
         <ModeToggle />
         <div>
-          <ProfileMenu role={role ?? null} />
+          <ProfileMenu initialRole={role ?? null} />
         </div>
       </div>
     </Container>

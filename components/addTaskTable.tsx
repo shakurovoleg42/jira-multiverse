@@ -25,10 +25,6 @@ const AddTaskTable = () => {
         postData.title,
         postData.description
       );
-      Alert({
-        title: "Unauthorized",
-        children: "You need to log in to access this page.",
-      });
       console.log(response);
     } catch (err) {
       console.error(err);
