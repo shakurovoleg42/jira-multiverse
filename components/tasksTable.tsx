@@ -9,26 +9,30 @@ interface TasksTableProps {
 }
 
 function TasksTable({ initialTasks, role }: TasksTableProps) {
-  const [tasks, setTasks] = React.useState<Task[]>(initialTasks);
+  const [tasks, setTasks] = React.useState<Task[]>(initialTasks || []);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [deletingTaskId, setDeletingTaskId] = React.useState<number | null>(
+    null
+  );
 
-  const refreshTasks = async () => {
-    setIsLoading(true);
+  const handleDeleteTask = async (taskId: number) => {
+    setDeletingTaskId(taskId);
     try {
-      const response = await fetch("/api/tasks");
-      const data = await response.json();
-      setTasks(data);
+      await fetch(`/api/tasks/${taskId}`, { method: "DELETE" });
+
+      setTimeout(() => {
+        setTasks((prev) => prev.filter((task) => task.id !== taskId));
+        setDeletingTaskId(null);
+      }, 300);
     } catch (error) {
-      console.error("Error refreshing tasks:", error);
-    } finally {
-      setIsLoading(false);
+      console.error("Failed to delete task:", error);
     }
   };
 
   return (
     <tbody className="bg-transparent">
       <tr className="align-top">
-        <td className="w-1/1 px-4 md:px-6 py-4 bg-blue-50 dark:bg-blue-900/20">
+        <td className="w-full px-4 md:px-6 py-4 bg-blue-50 dark:bg-blue-900/20">
           {isLoading ? (
             <div className="flex justify-center">
               <svg
@@ -52,21 +56,27 @@ function TasksTable({ initialTasks, role }: TasksTableProps) {
                 ></path>
               </svg>
             </div>
-          ) : tasks.length === 0 ? (
+          ) : !Array.isArray(tasks) || tasks.length === 0 ? (
             <div className="flex items-center justify-center h-full">
               <p className="text-gray-500 dark:text-gray-400 select-none">
                 No tasks
               </p>
             </div>
           ) : (
-            <div className="flex flex-col gap-4 items-center justify-center">
+            <div className="flex flex-col gap-4  justify-center">
               {tasks.map((task) => (
-                <TaskCard
+                <div
                   key={task.id}
-                  task={task}
-                  role={role}
-                  onDelete={refreshTasks}
-                />
+                  className={`transition-opacity duration-300 ${
+                    deletingTaskId === task.id ? "opacity-0" : "opacity-100"
+                  }`}
+                >
+                  <TaskCard
+                    task={task}
+                    role={role}
+                    onDelete={() => handleDeleteTask(task.id)}
+                  />
+                </div>
               ))}
             </div>
           )}

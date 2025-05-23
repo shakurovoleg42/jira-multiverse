@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { taskService } from "@/service/task.service";
-import { Alert } from "./ui/alert";
+
 interface Task {
   title: string;
   description: string;
@@ -25,7 +25,6 @@ const AddTaskTable = () => {
         postData.title,
         postData.description
       );
-      console.log(response);
     } catch (err) {
       console.error(err);
     }

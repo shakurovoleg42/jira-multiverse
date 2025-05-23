@@ -24,7 +24,6 @@ function TaskCard({ task, role, onDelete }: TaskCardProps) {
 
     try {
       await taskService.delete(task.id);
-      console.log(`Task ${task.id} deleted`);
       if (onDelete) {
         onDelete();
       }
