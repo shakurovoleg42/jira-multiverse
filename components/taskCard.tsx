@@ -157,9 +157,6 @@ function TaskCard({ task, role, onDelete }: TaskCardProps) {
       {/* alert dialog for Edit / Open */}
 
       <AlertDialog open={isOpen}>
-        {/* <AlertDialogTrigger asChild>
-          <button>close</button>
-        </AlertDialogTrigger> */}
         <AlertDialogContent>
           <AlertDialogHeader>
             <div>
