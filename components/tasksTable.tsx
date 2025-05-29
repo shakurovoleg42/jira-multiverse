@@ -2,6 +2,7 @@
 import React from "react";
 import TaskCard from "./taskCard";
 import { Task } from "../types/tasks";
+import { taskService } from "@/service/task.service";
 
 interface TasksTableProps {
   initialTasks: Task[];
@@ -14,6 +15,14 @@ function TasksTable({ initialTasks, role }: TasksTableProps) {
   const [deletingTaskId, setDeletingTaskId] = React.useState<number | null>(
     null
   );
+
+  React.useEffect(() => {
+    const fetchTasks = async () => {
+      const newTasks = await taskService.list();
+      setTasks(newTasks);
+    };
+    fetchTasks();
+  }, [initialTasks]);
 
   const handleDeleteTask = async (taskId: number) => {
     setDeletingTaskId(taskId);
