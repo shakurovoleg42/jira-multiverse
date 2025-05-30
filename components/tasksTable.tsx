@@ -32,13 +32,22 @@ function TasksTable({ initialTasks, role }: TasksTableProps) {
     try {
       const updatedTask = await taskService.getById(taskId);
 
+      if (!updatedTask) {
+        console.error("Task not found");
+        return;
+      }
+
       setTasks((prevTasks) =>
         prevTasks.map((task) =>
           task.id === taskId ? { ...task, ...updatedTask } : task
         )
       );
-    } catch (error) {
-      console.error("Failed to fetch updated task:", error);
+    } catch (error: any) {
+      if (error.response?.status === 404) {
+        console.error("Task not found");
+      } else {
+        console.error("Failed to fetch updated task:", error);
+      }
     } finally {
       setUpdatingTaskId(null);
     }
@@ -49,8 +58,12 @@ function TasksTable({ initialTasks, role }: TasksTableProps) {
     try {
       await taskService.delete(taskId);
       setTasks((prev) => prev.filter((task) => task.id !== taskId));
-    } catch (error) {
-      console.error("Failed to delete task:", error);
+    } catch (error: any) {
+      if (error.response?.status === 404) {
+        console.error("Task not found");
+      } else {
+        console.error("Failed to delete task:", error);
+      }
     } finally {
       setDeletingTaskId(null);
     }

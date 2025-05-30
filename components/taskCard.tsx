@@ -45,19 +45,6 @@ function TaskCard({ task, role, onDelete, onUpdate }: TaskCardProps) {
     setDialogOpen(true);
   };
 
-  const handleDelete = async () => {
-    setIsLoading(true);
-    try {
-      await taskService.delete(task.id);
-      onDelete?.();
-    } catch (error) {
-      console.error("Error deleting task:", error);
-    } finally {
-      setIsLoading(false);
-      setDialogOpen(false);
-    }
-  };
-
   const handleSubmit = async () => {
     if (dialogMode !== "edit") return;
 
@@ -176,7 +163,7 @@ function TaskCard({ task, role, onDelete, onUpdate }: TaskCardProps) {
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             {dialogMode === "delete" ? (
               <AlertDialogAction
-                onClick={handleDelete}
+                onClick={onDelete}
                 disabled={isLoading}
                 className="bg-destructive hover:bg-destructive/90"
               >

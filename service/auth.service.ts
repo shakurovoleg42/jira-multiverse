@@ -34,15 +34,27 @@ export const authService = {
     return response.data;
   },
 
-  getMe: async () => {
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/me`, {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      withCredentials: true,
-    } as AxiosRequestConfig);
-    return response.data;
+  getMe: async (redirectUnauthorized = true) => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/me`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      return response.data;
+    } catch (error: any) {
+      if (error.response?.status === 401 && redirectUnauthorized) {
+        if (window.location.pathname !== "/login") {
+          window.location.href = "/login";
+        }
+      }
+      throw error;
+    }
   },
 
   setRoleToCookies: (role: string) => {
