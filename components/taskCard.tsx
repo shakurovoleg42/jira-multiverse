@@ -2,9 +2,8 @@
 import clsx from "clsx";
 import React, { useState } from "react";
 import { useTheme } from "next-themes";
-import { BookOpen, Edit, Settings, Trash, Trash2 } from "lucide-react";
-import { TaskCardProps } from "../types/tasks"; // TaskStatus
-
+import { BookOpen, Edit, Settings, Trash } from "lucide-react";
+import { TaskCardProps } from "../types/tasks";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,53 +21,63 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { taskService } from "@/service/task.service";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
+import { Button } from "./ui/button";
 
-function TaskCard({ task, role, onDelete }: TaskCardProps) {
+type DialogMode = "view" | "edit" | "delete";
+
+function TaskCard({ task, role, onDelete, onUpdate }: TaskCardProps) {
   const { theme } = useTheme();
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [typeDialog, setTypeDialog] = useState("");
-  const [isDisabled, setIsDisabled] = useState(false);
-  const [editTaskData, setEditTaskData] = useState({
+  const [isLoading, setIsLoading] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogMode, setDialogMode] = useState<DialogMode>("view");
+  const [taskData, setTaskData] = useState({
     id: task.id,
     title: task.title || "",
     description: task.description || "",
   });
 
-  const handleOpenDialog = (type: string) => {
-    if (type === "Edit") {
-      setIsDisabled(false);
-      setTypeDialog("Edit");
-    }
-    if (type === "Open") {
-      setIsDisabled(true);
-      setTypeDialog("Open");
-    }
-    setIsOpen(!isOpen);
+  const handleDialogOpen = (mode: DialogMode) => {
+    setDialogMode(mode);
+    setDialogOpen(true);
   };
 
   const handleDelete = async () => {
-    setIsDeleting(true);
-
+    setIsLoading(true);
     try {
       await taskService.delete(task.id);
-      if (onDelete) {
-        onDelete();
-      }
+      onDelete?.();
     } catch (error) {
       console.error("Error deleting task:", error);
+    } finally {
+      setIsLoading(false);
+      setDialogOpen(false);
     }
   };
 
   const handleSubmit = async () => {
-    console.log("Form submitted");
-    console.log("Task data:", editTaskData);
-    setIsOpen(false);
+    if (dialogMode !== "edit") return;
+
+    setIsLoading(true);
+    try {
+      await taskService.edit(taskData.id, taskData.title, taskData.description);
+      onUpdate?.();
+      setDialogOpen(false);
+    } catch (error) {
+      console.error("Error updating task:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setTaskData((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -87,125 +96,99 @@ function TaskCard({ task, role, onDelete }: TaskCardProps) {
           Author: {task.createdBy}
         </p>
       </div>
+
       <DropdownMenu>
-        <DropdownMenuTrigger>
-          {isDeleting ? (
-            <svg
-              className="animate-spin h-5 w-5 text-red-500"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C4.477 0 0 4.477 0 10h4z"
-              ></path>
-            </svg>
-          ) : (
-            <Settings />
-          )}
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon">
+            {isLoading ? (
+              <div className="animate-spin">↻</div>
+            ) : (
+              <Settings className="h-4 w-4" />
+            )}
+          </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuLabel className="font-bold">Options:</DropdownMenuLabel>
+          <DropdownMenuLabel>Task Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => handleOpenDialog("Open")}
-            className="flex flex-row"
-          >
-            <BookOpen />
-            Open
+
+          <DropdownMenuItem onClick={() => handleDialogOpen("view")}>
+            <BookOpen className="mr-2 h-4 w-4" />
+            View
           </DropdownMenuItem>
+
           {role === "admin" && (
             <>
               <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => handleOpenDialog("Edit")}
-                className="flex flex-row"
-              >
-                <Edit />
+              <DropdownMenuItem onClick={() => handleDialogOpen("edit")}>
+                <Edit className="mr-2 h-4 w-4" />
                 Edit
               </DropdownMenuItem>
             </>
           )}
 
-          {(role === "admin" ||
-            (role === "user" && task.createdBy === "user")) && (
+          {(role === "admin" || task.createdBy === "user") && (
             <>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                onClick={handleDelete}
-                className="flex flex-row"
-                disabled={isDeleting}
+                onClick={() => handleDialogOpen("delete")}
+                disabled={isLoading}
               >
                 <Trash className="mr-2 h-4 w-4" />
-                {isDeleting ? "Deleting..." : "Delete"}
+                Delete
               </DropdownMenuItem>
             </>
           )}
         </DropdownMenuContent>
       </DropdownMenu>
 
-      {/* alert dialog for Edit / Open */}
-
-      <AlertDialog open={isOpen}>
+      <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <div>
-              <AlertDialogTitle>
-                {typeDialog} mode |{" "}
-                {typeDialog === "Open" ? "read only" : "Hi Admin`ушка"}
-              </AlertDialogTitle>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="absolute top-2 right-2 hover:cursor-pointer"
-              >
-                ❌
-              </button>
-            </div>
-
+            <AlertDialogTitle>
+              {dialogMode === "view" && "Task Details"}
+              {dialogMode === "edit" && "Edit Task"}
+              {dialogMode === "delete" && "Confirm Deletion"}
+            </AlertDialogTitle>
             <AlertDialogDescription>
-              <form action="" className="flex flex-col gap-4 font-bold ">
-                <Input
-                  placeholder="Task Title"
-                  disabled={isDisabled}
-                  value={editTaskData.title}
-                  onChange={(e) =>
-                    setEditTaskData({ ...editTaskData, title: e.target.value })
-                  }
-                />
-                <Textarea
-                  placeholder="Task Description"
-                  disabled={isDisabled}
-                  value={editTaskData.description}
-                  onChange={(e) =>
-                    setEditTaskData({
-                      ...editTaskData,
-                      description: e.target.value,
-                    })
-                  }
-                />
-              </form>
+              {dialogMode === "delete" ? (
+                `Are you sure you want to delete "${task.title}"? This action cannot be undone.`
+              ) : (
+                <div className="space-y-4 pt-2">
+                  <Input
+                    name="title"
+                    placeholder="Task Title"
+                    value={taskData.title}
+                    onChange={handleInputChange}
+                    disabled={dialogMode === "view"}
+                  />
+                  <Textarea
+                    name="description"
+                    placeholder="Task Description"
+                    value={taskData.description}
+                    onChange={handleInputChange}
+                    disabled={dialogMode === "view"}
+                  />
+                </div>
+              )}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel
-              onClick={() => setIsOpen(false)}
-              className="hover:text-[#ffffff]"
-            >
-              Cancel
-            </AlertDialogCancel>
-            <AlertDialogAction onClick={handleSubmit}>
-              Continue
-            </AlertDialogAction>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            {dialogMode === "delete" ? (
+              <AlertDialogAction
+                onClick={handleDelete}
+                disabled={isLoading}
+                className="bg-destructive hover:bg-destructive/90"
+              >
+                {isLoading ? "Deleting..." : "Delete"}
+              </AlertDialogAction>
+            ) : (
+              dialogMode === "edit" && (
+                <AlertDialogAction onClick={handleSubmit} disabled={isLoading}>
+                  {isLoading ? "Saving..." : "Save Changes"}
+                </AlertDialogAction>
+              )
+            )}
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
