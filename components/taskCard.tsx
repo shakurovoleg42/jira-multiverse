@@ -103,7 +103,7 @@ function TaskCard({ task, role, onDelete, onUpdate }: TaskCardProps) {
             View
           </DropdownMenuItem>
 
-          {role === "admin" && (
+          {(role === "admin" || task.createdBy === "user") && (
             <>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => handleDialogOpen("edit")}>
