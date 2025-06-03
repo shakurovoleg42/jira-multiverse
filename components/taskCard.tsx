@@ -53,8 +53,16 @@ function TaskCard({ task, role, onDelete, onUpdate }: TaskCardProps) {
       await taskService.edit(taskData.id, taskData.title, taskData.description);
       onUpdate?.();
       setDialogOpen(false);
-    } catch (error) {
-      console.error("Error updating task:", error);
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        alert("Not Authenticated");
+      } else if (error.response?.status === 404) {
+        alert("Task not found");
+      } else if (error.response?.status === 400) {
+        alert("Title should be unique");
+      } else if (error.response?.status === 403) {
+        alert("Not Authorized");
+      }
     } finally {
       setIsLoading(false);
     }

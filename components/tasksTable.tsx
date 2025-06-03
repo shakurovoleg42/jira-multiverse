@@ -44,9 +44,9 @@ function TasksTable({ initialTasks, role }: TasksTableProps) {
       );
     } catch (error: any) {
       if (error.response?.status === 404) {
-        console.error("Task not found");
-      } else {
-        console.error("Failed to fetch updated task:", error);
+        alert("Task not found");
+      } else if (error.response?.status === 401) {
+        alert("Not Authenticated");
       }
     } finally {
       setUpdatingTaskId(null);
@@ -60,9 +60,11 @@ function TasksTable({ initialTasks, role }: TasksTableProps) {
       setTasks((prev) => prev.filter((task) => task.id !== taskId));
     } catch (error: any) {
       if (error.response?.status === 404) {
-        console.error("Task not found");
-      } else {
-        console.error("Failed to delete task:", error);
+        alert("Task not found");
+      } else if (error.response?.status === 401) {
+        alert("Not Authenticated");
+      } else if (error.response?.status === 403) {
+        alert("Not Authorized");
       }
     } finally {
       setDeletingTaskId(null);

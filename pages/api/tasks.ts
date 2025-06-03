@@ -9,6 +9,6 @@ export default async function handler(
     const tasks = await taskService.list();
     res.status(200).json(tasks);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch tasks" });
+    res.status(401).json({ error: "Not Authenticated" });
   }
 }

@@ -20,7 +20,7 @@ function Login() {
 
     try {
       await login(username, password);
-      router.push("/");
+      // router.push("/");
     } catch (err) {
       setError("Invalid username or password");
       console.error("Login error:", err);

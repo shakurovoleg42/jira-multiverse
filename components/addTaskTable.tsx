@@ -25,8 +25,12 @@ const AddTaskTable = () => {
         postData.title,
         postData.description
       );
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      if (err.response?.status === 401) {
+        alert("Not Authenticated");
+      } else {
+        alert("Title should be unique");
+      }
     }
     setLoading(false);
 

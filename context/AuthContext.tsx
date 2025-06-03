@@ -59,8 +59,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (error: any) {
       if (error.response?.status === 400) {
         alert("Invalid username or password");
-      } else {
-        alert("An error occurred. Please try again later.");
       }
     }
   };
