@@ -1,8 +1,7 @@
 "use client";
 import { FC, PropsWithChildren } from "react";
 
-import Header from "./header";
-import Footer from "./footer";
+import Header from "@/components/header/Header";
 import { useAuth } from "@/context/AuthContext";
 import Cookies from "js-cookie";
 
@@ -20,7 +19,6 @@ const Layout: FC<PropsWithChildren> = ({ children }) => {
     <>
       <Header role={role} />
       <main>{children}</main>
-      <Footer />
     </>
   );
 };

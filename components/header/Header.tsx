@@ -1,16 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import React, { useEffect, useState } from "react";
-import { ModeToggle } from "./theme-toggler";
-import { Button } from "./ui/button";
+import { ModeToggle } from "../theme-toggler";
+import { Button } from "../ui/button";
 import Link from "next/link";
-import { Container } from "./container";
+import { Container } from "../container";
 import clsx from "clsx";
 import { useTheme } from "next-themes";
 
-import ProfileMenu from "./profile";
+import ProfileMenu from "./components/profile";
 import { User } from "@/types/user";
-import IsAdminUsers from "./isAdminUsers";
+import IsAdminUsers from "./components/isAdminUsers";
 
 const Header = ({ role }: { role: User["role"] }) => {
   const { theme } = useTheme();

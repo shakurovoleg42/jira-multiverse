@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { authService } from "@/service/auth.service";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { DoorOpen } from "lucide-react";
 
 export default function ProfileMenu({
@@ -11,7 +11,7 @@ export default function ProfileMenu({
 }: {
   initialRole: string | null;
 }) {
-  const [role, setRole] = useState<string | null>(null); // НЕ initialRole
+  const [role, setRole] = useState<string | null>(null);
   const [isMounted, setIsMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
