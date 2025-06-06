@@ -6,7 +6,7 @@ import { Container } from "../Container";
 import clsx from "clsx";
 
 import ProfileMenu from "./components/profile";
-import { User } from "./types/user";
+import { User } from "@/types/user";
 import IsAdminUsers from "./components/isAdminUsers";
 
 const Header = ({ role }: { role: User["role"] }) => {
