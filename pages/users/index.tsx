@@ -1,4 +1,4 @@
-import { Container } from "@/components/container";
+import { Container } from "@/components/Container";
 import { usersService } from "@/service/users.service";
 import { parseCookies } from "nookies";
 import { GetServerSideProps } from "next";

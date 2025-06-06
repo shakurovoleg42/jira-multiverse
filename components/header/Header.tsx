@@ -1,20 +1,15 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 import React, { useEffect, useState } from "react";
 import { ModeToggle } from "../theme-toggler";
-import { Button } from "../ui/button";
 import Link from "next/link";
-import { Container } from "../container";
+import { Container } from "../Container";
 import clsx from "clsx";
-import { useTheme } from "next-themes";
 
 import ProfileMenu from "./components/profile";
-import { User } from "@/types/user";
+import { User } from "./types/user";
 import IsAdminUsers from "./components/isAdminUsers";
 
 const Header = ({ role }: { role: User["role"] }) => {
-  const { theme } = useTheme();
-
   return (
     <Container
       className={clsx(
@@ -29,14 +24,6 @@ const Header = ({ role }: { role: User["role"] }) => {
           <li>
             <Link href="/" className="hover:border-b-[3px] border-amber-500">
               Home
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/dashboard"
-              className="hover:border-b-[3px] border-amber-500"
-            >
-              Dashboard
             </Link>
           </li>
           <IsAdminUsers role={role ?? ""} />

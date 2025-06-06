@@ -11,7 +11,6 @@ interface TasksTableProps {
 
 function TasksTable({ initialTasks, role }: TasksTableProps) {
   const [tasks, setTasks] = React.useState<Task[]>(initialTasks || []);
-  const [isLoading, setIsLoading] = React.useState(false);
   const [deletingTaskId, setDeletingTaskId] = React.useState<number | null>(
     null
   );

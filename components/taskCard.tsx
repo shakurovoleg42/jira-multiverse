@@ -3,7 +3,6 @@ import clsx from "clsx";
 import React, { useState } from "react";
 import { useTheme } from "next-themes";
 import { BookOpen, Edit, Settings, Trash } from "lucide-react";
-import { TaskCardProps } from "../types/tasks";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,6 +25,16 @@ import { taskService } from "@/service/task.service";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
+import { Task } from "@/types/tasks";
+
+export interface TaskCardProps {
+  task: Task;
+  role: string | null;
+  onDelete?: () => void;
+  onUpdate?: () => void;
+  isUpdating: boolean;
+  setIsUpdate?: (id: number | null) => void;
+}
 
 type DialogMode = "view" | "edit" | "delete";
 

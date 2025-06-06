@@ -1,6 +1,6 @@
 import { ThemeProvider } from "next-themes";
 import { AuthProvider } from "@/context/AuthContext";
-import Layout from "../components/layout";
+import Layout from "../components/Layout";
 import "./globals.css";
 import type { AppProps } from "next/app";
 import NextTopLoader from "nextjs-toploader";
