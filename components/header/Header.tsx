@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { ModeToggle } from "../theme-toggler";
+import { ModeToggle } from "./components/theme-toggler";
 import Link from "next/link";
 import { Container } from "../Container";
 import clsx from "clsx";
