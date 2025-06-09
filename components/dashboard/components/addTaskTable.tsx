@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
+import { Button } from "../../ui/button";
+import { Input } from "../../ui/input";
+import { Textarea } from "../../ui/textarea";
 import { taskService } from "@/service/task.service";
 
 interface Task {
@@ -31,8 +31,9 @@ const AddTaskTable = () => {
       } else {
         alert("Title should be unique");
       }
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
 
     setPostData({ title: "", description: "" });
   };

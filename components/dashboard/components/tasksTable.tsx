@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import TaskCard from "./taskCard";
-import { Task } from "../types/tasks";
+import { Task } from "../../../types/tasks";
 import { taskService } from "@/service/task.service";
 
 interface TasksTableProps {

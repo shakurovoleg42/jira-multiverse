@@ -1,8 +1,8 @@
 import React from "react";
-import { Container } from "./Container";
-import TasksTable from "./tasksTable";
-import { Task } from "../types/tasks";
-import { User } from "../types/user";
+import { Container } from "../Container";
+import TasksTable from "./components/tasksTable";
+import { Task } from "../../types/tasks";
+import { User } from "../../types/user";
 
 interface DashboardProps {
   initialTasks: Task[];

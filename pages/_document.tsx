@@ -7,7 +7,6 @@ export default function Document() {
         <link rel="icon" href="/favicon.svg" />
         <meta name="title" content="Mini Jira" />
         <meta name="description" content="mini Jira for DSR course" />
-        <meta name="theme-color" content="#ffffff" />
         <link href="https://fonts.cdnfonts.com/css/geist" rel="stylesheet" />
         <link
           href="https://fonts.cdnfonts.com/css/geist-mono"

@@ -1,8 +1,8 @@
 import { GetServerSideProps } from "next";
 import { parseCookies } from "nookies";
 import { Container } from "@/components/Container";
-import Dashboard from "@/components/dashboard";
-import AddTaskTable from "@/components/addTaskTable";
+import Dashboard from "@/components/dashboard/dashboard";
+import AddTaskTable from "@/components/dashboard/components/addTaskTable";
 import { taskService } from "@/service/task.service";
 import { Task } from "@/types/tasks";
 import { User } from "@/types/user";

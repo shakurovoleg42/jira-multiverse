@@ -22,9 +22,9 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { taskService } from "@/service/task.service";
-import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
-import { Button } from "./ui/button";
+import { Input } from "../../ui/input";
+import { Textarea } from "../../ui/textarea";
+import { Button } from "../../ui/button";
 import { Task } from "@/types/tasks";
 
 export interface TaskCardProps {
