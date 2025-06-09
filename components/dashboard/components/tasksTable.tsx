@@ -8,9 +8,10 @@ import clsx from "clsx";
 interface TasksTableProps {
   initialTasks: Task[];
   role: string | null;
+  newTaskId?: number | null;
 }
 
-function TasksTable({ initialTasks, role }: TasksTableProps) {
+function TasksTable({ initialTasks, role, newTaskId }: TasksTableProps) {
   const [tasks, setTasks] = React.useState<Task[]>(initialTasks || []);
   const [deletingTaskId, setDeletingTaskId] = React.useState<number | null>(
     null
@@ -28,17 +29,28 @@ function TasksTable({ initialTasks, role }: TasksTableProps) {
     fetchTasks();
   }, []);
 
-  const handleUpdateTask = React.useCallback(async (taskId: number) => {
+  React.useEffect(() => {
+    if (newTaskId) {
+      handleInsertOrUpdateTask(newTaskId);
+    }
+  }, [newTaskId]);
+
+  const handleInsertOrUpdateTask = React.useCallback(async (taskId: number) => {
     setIsLoading(true);
     setUpdatingTaskId(taskId);
     try {
-      const updatedTask = await taskService.getById(taskId);
+      const newTask = await taskService.getById(taskId);
 
-      setTasks((prevTasks) =>
-        prevTasks.map((task) =>
-          task.id === taskId ? { ...task, ...updatedTask } : task
-        )
-      );
+      setTasks((prevTasks) => {
+        const existing = prevTasks.find((task) => task.id === taskId);
+        if (existing) {
+          return prevTasks.map((task) =>
+            task.id === taskId ? { ...task, ...newTask } : task
+          );
+        } else {
+          return [newTask, ...prevTasks];
+        }
+      });
     } catch (error: any) {
       if (error.response?.status === 404) {
         alert("Task not found");
@@ -119,7 +131,7 @@ function TasksTable({ initialTasks, role }: TasksTableProps) {
                     task={task}
                     role={role}
                     onDelete={() => handleDeleteTask(task.id)}
-                    onUpdate={() => handleUpdateTask(task.id)}
+                    onUpdate={() => handleInsertOrUpdateTask(task.id)}
                     isUpdating={updatingTaskId === task.id}
                   />
                 </div>

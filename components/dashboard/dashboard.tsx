@@ -7,9 +7,10 @@ import { User } from "../../types/user";
 interface DashboardProps {
   initialTasks: Task[];
   role: User["role"];
+  newTaskId?: number | null;
 }
 
-function Dashboard({ initialTasks, role }: DashboardProps) {
+function Dashboard({ initialTasks, role, newTaskId }: DashboardProps) {
   return (
     <Container className="flex flex-row flex-wrap justify-between">
       <div className="overflow-x-auto shadow-lg rounded-lg">
@@ -24,7 +25,11 @@ function Dashboard({ initialTasks, role }: DashboardProps) {
               </th>
             </tr>
           </thead>
-          <TasksTable initialTasks={initialTasks} role={role ?? null} />
+          <TasksTable
+            initialTasks={initialTasks}
+            role={role ?? null}
+            newTaskId={newTaskId}
+          />
         </table>
       </div>
     </Container>

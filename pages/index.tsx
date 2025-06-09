@@ -6,6 +6,7 @@ import AddTaskTable from "@/components/dashboard/components/addTaskTable";
 import { taskService } from "@/service/task.service";
 import { Task } from "@/types/tasks";
 import { User } from "@/types/user";
+import React from "react";
 
 interface HomePageProps {
   initialTasks: Task[];
@@ -40,6 +41,7 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async (
 };
 
 export default function Home({ initialTasks, role }: HomePageProps) {
+  const [idTask, setIdTask] = React.useState<number | null>(null);
   if (!role) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -51,10 +53,10 @@ export default function Home({ initialTasks, role }: HomePageProps) {
   return (
     <Container className="relative my-20 flex flex-col md:flex-row justify-center gap-[100px] align-top">
       <div>
-        <Dashboard initialTasks={initialTasks} role={role} />
+        <Dashboard initialTasks={initialTasks} role={role} newTaskId={idTask} />
       </div>
       <div>
-        <AddTaskTable />
+        <AddTaskTable onTaskCreated={setIdTask} />
       </div>
     </Container>
   );

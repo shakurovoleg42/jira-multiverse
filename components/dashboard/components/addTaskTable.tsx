@@ -8,8 +8,11 @@ interface Task {
   title: string;
   description: string;
 }
+interface AddTaskTableProps {
+  onTaskCreated: (taskId: number) => void;
+}
 
-const AddTaskTable = () => {
+const AddTaskTable = ({ onTaskCreated }: AddTaskTableProps) => {
   const [open, setOpen] = useState(false);
   const [postData, setPostData] = useState<Task>({
     title: "",
@@ -25,6 +28,7 @@ const AddTaskTable = () => {
         postData.title,
         postData.description
       );
+      onTaskCreated(response.id);
     } catch (err: any) {
       if (err.response?.status === 401) {
         alert("Not Authenticated");
