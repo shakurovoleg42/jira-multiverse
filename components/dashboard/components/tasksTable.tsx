@@ -3,6 +3,7 @@ import React from "react";
 import TaskCard from "./taskCard";
 import { Task } from "../../../types/tasks";
 import { taskService } from "@/service/task.service";
+import clsx from "clsx";
 
 interface TasksTableProps {
   initialTasks: Task[];
@@ -17,6 +18,7 @@ function TasksTable({ initialTasks, role }: TasksTableProps) {
   const [updatingTaskId, setUpdatingTaskId] = React.useState<number | null>(
     null
   );
+  const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
     const fetchTasks = async () => {
@@ -27,14 +29,10 @@ function TasksTable({ initialTasks, role }: TasksTableProps) {
   }, []);
 
   const handleUpdateTask = React.useCallback(async (taskId: number) => {
+    setIsLoading(true);
     setUpdatingTaskId(taskId);
     try {
       const updatedTask = await taskService.getById(taskId);
-
-      if (!updatedTask) {
-        console.error("Task not found");
-        return;
-      }
 
       setTasks((prevTasks) =>
         prevTasks.map((task) =>
@@ -48,6 +46,7 @@ function TasksTable({ initialTasks, role }: TasksTableProps) {
         alert("Not Authenticated");
       }
     } finally {
+      setIsLoading(false);
       setUpdatingTaskId(null);
     }
   }, []);
@@ -81,7 +80,34 @@ function TasksTable({ initialTasks, role }: TasksTableProps) {
               </p>
             </div>
           ) : (
-            <div className="flex flex-col gap-4 justify-center">
+            <div
+              className={clsx(
+                "flex flex-col gap-4 justify-center",
+                isLoading === true ? "opacity-50" : "opacity-100"
+              )}
+            >
+              {isLoading && (
+                <svg
+                  className="animate-spin h-5 w-5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C4.477 0 0 4.477 0 10h4z"
+                  ></path>
+                </svg>
+              )}
               {tasks.map((task) => (
                 <div
                   key={task.id}

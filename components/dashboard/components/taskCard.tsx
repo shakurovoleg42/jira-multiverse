@@ -56,11 +56,9 @@ function TaskCard({ task, role, onDelete, onUpdate }: TaskCardProps) {
 
   const handleSubmit = async () => {
     if (dialogMode !== "edit") return;
-
     setIsLoading(true);
     try {
       await taskService.edit(taskData.id, taskData.title, taskData.description);
-      onUpdate?.();
       setDialogOpen(false);
     } catch (error: any) {
       if (error.response?.status === 401) {
@@ -73,6 +71,7 @@ function TaskCard({ task, role, onDelete, onUpdate }: TaskCardProps) {
         alert("Not Authorized");
       }
     } finally {
+      onUpdate?.();
       setIsLoading(false);
     }
   };
@@ -177,21 +176,43 @@ function TaskCard({ task, role, onDelete, onUpdate }: TaskCardProps) {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            {dialogMode === "delete" ? (
-              <AlertDialogAction
-                onClick={onDelete}
-                disabled={isLoading}
-                className="bg-destructive hover:bg-destructive/90"
-              >
-                {isLoading ? "Deleting..." : "Delete"}
-              </AlertDialogAction>
+            {dialogMode === "view" ? (
+              <>
+                <AlertDialogCancel className="text-amber-500 hover:text-amber-200">
+                  Close
+                </AlertDialogCancel>
+                {role === "admin" || task.createdBy === "user" ? (
+                  <Button
+                    variant="outline"
+                    onClick={() => setDialogMode("edit")}
+                    className="border-amber-500 text-amber-500 hover:text-amber-500"
+                  >
+                    Switch to Edit Mode
+                  </Button>
+                ) : null}
+              </>
             ) : (
-              dialogMode === "edit" && (
-                <AlertDialogAction onClick={handleSubmit} disabled={isLoading}>
-                  {isLoading ? "Saving..." : "Save Changes"}
-                </AlertDialogAction>
-              )
+              <>
+                <AlertDialogCancel className="text-amber-500 hover:text-amber-500">
+                  Cancel
+                </AlertDialogCancel>
+                {dialogMode === "delete" ? (
+                  <AlertDialogAction
+                    onClick={onDelete}
+                    disabled={isLoading}
+                    className="bg-destructive hover:bg-destructive/90"
+                  >
+                    {isLoading ? "Deleting..." : "Delete"}
+                  </AlertDialogAction>
+                ) : (
+                  <AlertDialogAction
+                    onClick={handleSubmit}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? "Saving..." : "Save Changes"}
+                  </AlertDialogAction>
+                )}
+              </>
             )}
           </AlertDialogFooter>
         </AlertDialogContent>

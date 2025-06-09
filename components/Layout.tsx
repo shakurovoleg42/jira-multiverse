@@ -8,13 +8,8 @@ import Cookies from "js-cookie";
 const Layout: FC<PropsWithChildren> = ({ children }) => {
   const { user } = useAuth();
   const validRoles = ["user", "admin"] as const;
-  const cookieRole = Cookies.get("role");
-  const role =
-    user?.role ??
-    (cookieRole &&
-    validRoles.includes(cookieRole as (typeof validRoles)[number])
-      ? (cookieRole as (typeof validRoles)[number])
-      : null);
+  const cookieRole = Cookies.get("role") as (typeof validRoles)[number] | null;
+  const role = user?.role ?? cookieRole ?? null;
   return (
     <>
       <Header role={role} />
